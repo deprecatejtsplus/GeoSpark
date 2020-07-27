@@ -29,7 +29,7 @@ package org.datasyslab.geospark.geometryObjects;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.vividsolutions.jts.geom.Coordinate;
+import org.datasyslab.geospark.serde.GeoSparkKryoRegistrator;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -59,15 +59,14 @@ public class SpatialIndexSerdeTest
 
     private final GeometryFactory geometryFactory = new GeometryFactory();
 
-    private final SpatialIndexSerde spatialIndexSerde = new SpatialIndexSerde();
-
     @Test
     public void test()
             throws Exception
     {
 
-        kryo.register(Quadtree.class, spatialIndexSerde);
-        kryo.register(STRtree.class, spatialIndexSerde);
+        new GeoSparkKryoRegistrator().registerClasses(kryo);
+        kryo.register(Quadtree.class);
+        kryo.register(STRtree.class);
 
         // test correctness
         testCorrectness(Quadtree.class);
@@ -115,8 +114,8 @@ public class SpatialIndexSerdeTest
         byte[] noSerde = serializeIndexNoKryo(tree);
 
         // do with serde
-        if (aClass == Quadtree.class) { kryo.register(Quadtree.class, new SpatialIndexSerde()); }
-        else { kryo.register(STRtree.class, new SpatialIndexSerde()); }
+        if (aClass == Quadtree.class) { kryo.register(Quadtree.class); }
+        else { kryo.register(STRtree.class); }
         byte[] withSerde = serializeIndexKryo(tree);
 
         System.out.println("\n==== test size of " + aClass.toString() + "====");
@@ -144,8 +143,8 @@ public class SpatialIndexSerdeTest
         after = System.currentTimeMillis();
         System.out.println("original deserialize time : " + (after - before) / 1000);
         // do with serde
-        if (aClass == Quadtree.class) { kryo.register(Quadtree.class, new SpatialIndexSerde()); }
-        else { kryo.register(STRtree.class, new SpatialIndexSerde()); }
+        if (aClass == Quadtree.class) { kryo.register(Quadtree.class); }
+        else { kryo.register(STRtree.class); }
 
         before = System.currentTimeMillis();
         byte[] withSerde = serializeIndexKryo(tree);
