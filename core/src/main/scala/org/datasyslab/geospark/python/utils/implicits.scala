@@ -29,9 +29,10 @@ object implicits {
   }
 
   implicit class GeometryEnhancer(geometry: Geometry){
-    def userDataToUtf8ByteArray: Array[Byte] =
-      geometry.getUserData.asInstanceOf[String]
-        .getBytes(StandardCharsets.UTF_8)
+    def userDataToUtf8ByteArray: Array[Byte] = {
+      val userdata = geometry.getUserData.asInstanceOf[String]
+      (if (userdata != null) userdata else "").getBytes(StandardCharsets.UTF_8)
+    }
   }
 
   implicit class ListConverter[T](elements: List[T]){
