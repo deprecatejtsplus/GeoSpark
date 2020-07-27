@@ -75,6 +75,12 @@ object Adapter {
     toRdd(dataFrame, geomColId)
   }
 
+  private def toSeq(geometry: Geometry, limit: Int = 0): Seq[String] = {
+    def getUserData: Seq[String] = geometry.getUserData.toString.split("\t", limit)
+    val userDataSeq = if (geometry.getUserData != null  && geometry.getUserData != "") getUserData else Seq()
+    geometry.toString +: userDataSeq
+  }
+
   @deprecated( "use toSpatialRdd and append geometry column's name", "1.2" )
   def toSpatialRdd(dataFrame: DataFrame): SpatialRDD[Geometry] =
   {
@@ -153,7 +159,7 @@ object Adapter {
   }
 
   def toDf[T <:Geometry](spatialRDD: SpatialRDD[T], fieldNames: List[String], sparkSession: SparkSession): DataFrame = {
-    val rowRdd = spatialRDD.rawSpatialRDD.rdd.map[Row](f => Row.fromSeq(f.toString.split("\t",-1).toSeq))
+    val rowRdd = spatialRDD.rawSpatialRDD.rdd.map[Row](f => Row.fromSeq(toSeq(f, -1)))
     if (fieldNames!=null && fieldNames.nonEmpty)
     {
       var fieldArray = new Array[StructField](fieldNames.size+1)
@@ -178,13 +184,8 @@ object Adapter {
   }
 
   def toDf(spatialPairRDD: JavaPairRDD[Geometry, Geometry], sparkSession: SparkSession): DataFrame = {
-    val rowRdd = spatialPairRDD.rdd.map[Row](f => {
-      val seq1 = f._1.toString.split("\t").toSeq
-      val seq2 = f._2.toString.split("\t").toSeq
-      val result = seq1 ++ seq2
-      Row.fromSeq(result)
-    })
-    val leftgeomlength = spatialPairRDD.rdd.take(1)(0)._1.toString.split("\t").length
+    val rowRdd = spatialPairRDD.rdd.map[Row](f => Row.fromSeq(toSeq(f._1) ++ toSeq(f._2)))
+    val leftgeomlength = toSeq(spatialPairRDD.rdd.take(1)(0)._1).length
 
     var fieldArray = new Array[StructField](rowRdd.take(1)(0).size)
     for (i <- fieldArray.indices) fieldArray(i) = StructField("_c" + i, StringType)
@@ -195,12 +196,7 @@ object Adapter {
   }
 
   def toDf(spatialPairRDD: JavaPairRDD[Geometry, Geometry], leftFieldnames: List[String], rightFieldNames: List[String], sparkSession: SparkSession): DataFrame = {
-    val rowRdd = spatialPairRDD.rdd.map[Row](f => {
-      val seq1 = f._1.toString.split("\t").toSeq
-      val seq2 = f._2.toString.split("\t").toSeq
-      val result = seq1 ++ seq2
-      Row.fromSeq(result)
-    })
+    val rowRdd = spatialPairRDD.rdd.map[Row](f => Row.fromSeq(toSeq(f._1) ++ toSeq(f._2)))
     val leftgeometryName = List("leftgeometry")
     val rightgeometryName = List("rightgeometry")
     val fullFieldNames = leftgeometryName ++ leftFieldnames ++ rightgeometryName ++ rightFieldNames
