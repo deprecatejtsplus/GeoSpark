@@ -16,6 +16,7 @@
  */
 package org.datasyslab.geospark.spatialRDD;
 
+import org.datasyslab.geospark.utils.ComparableGeometry;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -385,29 +386,6 @@ public class SpatialRDD<T extends Geometry>
                 }, true);
     }
 
-    private static final class ComparableGeometry<S extends Geometry> {
-
-        private S geometry;
-
-        public ComparableGeometry(S geometry) {
-            this.geometry = geometry;
-        }
-
-        @Override
-        public int hashCode() {
-            return geometry.hashCode();
-        }
-
-        @Override
-        public boolean equals(Object other) {
-            if (!(other instanceof ComparableGeometry)) {
-                return false;
-            }
-            ComparableGeometry o = (ComparableGeometry) other;
-            return Objects.equals(geometry, o.geometry) && Objects.equals(geometry.getUserData(), o.geometry.getUserData());
-        }
-    }
-
     /**
      * Count without duplicates.
      *
@@ -428,9 +406,9 @@ public class SpatialRDD<T extends Geometry>
 
     private long countWithoutDuplicates(JavaRDD rdd) {
         List<T> collectedResult = rdd.collect();
-        HashSet<ComparableGeometry<T>> resultWithoutDuplicates = new HashSet<>();
+        HashSet<ComparableGeometry> resultWithoutDuplicates = new HashSet<>();
         for (T t : collectedResult) {
-            resultWithoutDuplicates.add(new ComparableGeometry<T>(t));
+            resultWithoutDuplicates.add(new ComparableGeometry(t));
         }
         return resultWithoutDuplicates.size();
     }

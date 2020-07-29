@@ -16,6 +16,8 @@
  */
 package org.datasyslab.geospark.spatialOperator;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.datasyslab.geospark.utils.ComparableGeometry;
 import org.locationtech.jts.geom.Geometry;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.LogManager;
@@ -41,6 +43,7 @@ import org.datasyslab.geospark.spatialRDD.SpatialRDD;
 import scala.Tuple2;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 
 public class JoinQuery
@@ -505,7 +508,10 @@ public class JoinQuery
 
         final JavaRDD<Pair<U, T>> result =
                 (joinParams.allowDuplicates || uniqueResults) ? resultWithDuplicates
-                        : resultWithDuplicates.distinct();
+                        : resultWithDuplicates
+                        .map(a -> new ImmutablePair<ComparableGeometry, ComparableGeometry>(new ComparableGeometry(a.getLeft()), new ComparableGeometry(a.getRight())))
+                        .distinct()
+                        .map(a -> (Pair<U, T>)(new ImmutablePair<>(a.getLeft().getGeometry(), a.getRight().getGeometry())));
 
         return result.mapToPair(new PairFunction<Pair<U, T>, U, T>()
         {
