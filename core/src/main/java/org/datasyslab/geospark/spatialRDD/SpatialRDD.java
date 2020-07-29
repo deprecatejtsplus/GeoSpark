@@ -395,7 +395,7 @@ public class SpatialRDD<T extends Geometry>
 
         @Override
         public int hashCode() {
-            return this.geometry.hashCode();
+            return geometry.hashCode();
         }
 
         @Override
@@ -404,7 +404,7 @@ public class SpatialRDD<T extends Geometry>
                 return false;
             }
             ComparableGeometry o = (ComparableGeometry) other;
-            return Objects.equals(geometry, other) && Objects.equals(geometry.getUserData(), o.geometry.getUserData());
+            return Objects.equals(geometry, o.geometry) && Objects.equals(geometry.getUserData(), o.geometry.getUserData());
         }
     }
 
