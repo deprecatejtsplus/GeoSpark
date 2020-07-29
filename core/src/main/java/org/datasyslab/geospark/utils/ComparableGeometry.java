@@ -18,9 +18,10 @@ package org.datasyslab.geospark.utils;
 
 import org.locationtech.jts.geom.Geometry;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public final class ComparableGeometry<T extends Geometry> {
+public final class ComparableGeometry<T extends Geometry> implements Serializable {
 
     private T geometry;
 
