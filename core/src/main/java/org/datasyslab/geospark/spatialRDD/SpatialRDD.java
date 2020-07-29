@@ -60,12 +60,7 @@ import org.wololo.jts2geojson.GeoJSONWriter;
 import scala.Tuple2;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 // TODO: Auto-generated Javadoc
 
@@ -390,20 +385,36 @@ public class SpatialRDD<T extends Geometry>
                 }, true);
     }
 
+    private static final class ComparableGeometry<S extends Geometry> {
+
+        private S geometry;
+
+        public ComparableGeometry(S geometry) {
+            this.geometry = geometry;
+        }
+
+        @Override
+        public int hashCode() {
+            return this.geometry.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if (!(other instanceof ComparableGeometry)) {
+                return false;
+            }
+            ComparableGeometry o = (ComparableGeometry) other;
+            return Objects.equals(geometry, other) && Objects.equals(geometry.getUserData(), o.geometry.getUserData());
+        }
+    }
+
     /**
      * Count without duplicates.
      *
      * @return the long
      */
-    public long countWithoutDuplicates()
-    {
-
-        List collectedResult = this.rawSpatialRDD.collect();
-        HashSet resultWithoutDuplicates = new HashSet();
-        for (int i = 0; i < collectedResult.size(); i++) {
-            resultWithoutDuplicates.add(collectedResult.get(i));
-        }
-        return resultWithoutDuplicates.size();
+    public long countWithoutDuplicates() {
+        return countWithoutDuplicates(this.rawSpatialRDD);
     }
 
     /**
@@ -411,13 +422,15 @@ public class SpatialRDD<T extends Geometry>
      *
      * @return the long
      */
-    public long countWithoutDuplicatesSPRDD()
-    {
-        JavaRDD cleanedRDD = this.spatialPartitionedRDD;
-        List collectedResult = cleanedRDD.collect();
-        HashSet resultWithoutDuplicates = new HashSet();
-        for (int i = 0; i < collectedResult.size(); i++) {
-            resultWithoutDuplicates.add(collectedResult.get(i));
+    public long countWithoutDuplicatesSPRDD() {
+        return countWithoutDuplicates(this.spatialPartitionedRDD);
+    }
+
+    private long countWithoutDuplicates(JavaRDD rdd) {
+        List<T> collectedResult = rdd.collect();
+        HashSet<ComparableGeometry<T>> resultWithoutDuplicates = new HashSet<>();
+        for (T t : collectedResult) {
+            resultWithoutDuplicates.add(new ComparableGeometry<T>(t));
         }
         return resultWithoutDuplicates.size();
     }
