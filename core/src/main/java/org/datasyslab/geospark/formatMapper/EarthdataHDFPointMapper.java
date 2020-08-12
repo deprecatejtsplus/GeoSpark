@@ -252,7 +252,7 @@ public class EarthdataHDFPointMapper
                         coordinate = new Coordinate(SerNetCDFUtils.getDataSym(latitudeArray, j, i),
                                 SerNetCDFUtils.getDataSym(longitudeArray, j, i), SerNetCDFUtils.getDataAsym(dataArray, j, i, offset, increment));
                     }
-                    Point observation = geometryFactory.createPoint(coordinate);
+                    Point observation = (Point) geometryFactory.createPoint(coordinate);
                     String userData = "";
 
                     for (int k = 0; k < dataVariableList.length - 1; k++) {

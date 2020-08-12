@@ -59,7 +59,7 @@ public class PolyLineParser
         for (int i = 0; i < numParts; ++i) {
             int readScale = offsets[i + 1] - offsets[i];
             CoordinateSequence csString = readCoordinates(reader, readScale);
-            lines[i] = geometryFactory.createLineString(csString);
+            lines[i] = (LineString) geometryFactory.createLineString(csString);
         }
 
         if (numParts == 1) {

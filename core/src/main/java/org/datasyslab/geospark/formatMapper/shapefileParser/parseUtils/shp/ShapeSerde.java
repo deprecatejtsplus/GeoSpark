@@ -242,9 +242,9 @@ public class ShapeSerde
 
     private static void putPolygonPoints(ByteBuffer buffer, Polygon polygon)
     {
-        putPoints(buffer, polygon.getExteriorRing());
+        putPoints(buffer, (LineString) polygon.getExteriorRing());
         for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
-            putPoints(buffer, polygon.getInteriorRingN(i));
+            putPoints(buffer, (LineString) polygon.getInteriorRingN(i));
         }
     }
 
@@ -252,7 +252,7 @@ public class ShapeSerde
     {
         int numPoints = geometry.getNumPoints();
         for (int i = 0; i < numPoints; i++) {
-            Point point = geometry.getPointN(i);
+            Point point = (Point) geometry.getPointN(i);
             buffer.putDouble(point.getX());
             buffer.putDouble(point.getY());
         }

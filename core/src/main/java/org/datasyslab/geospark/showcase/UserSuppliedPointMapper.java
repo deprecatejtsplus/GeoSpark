@@ -49,7 +49,7 @@ public class UserSuppliedPointMapper
                 String longitudeString = columns[3].replaceAll("\"", "");
                 double latitude = Double.parseDouble(latitudeString);
                 double longitude = Double.parseDouble(longitudeString);
-                Point point = factory.createPoint(new Coordinate(longitude, latitude));
+                Point point = (Point) factory.createPoint(new Coordinate(longitude, latitude));
                 result.add(point);
             }
             catch (Exception e) {

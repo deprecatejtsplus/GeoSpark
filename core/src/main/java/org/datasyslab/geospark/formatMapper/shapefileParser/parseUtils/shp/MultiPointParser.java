@@ -52,7 +52,7 @@ public class MultiPointParser
         reader.skip(4 * DOUBLE_LENGTH);
         int numPoints = reader.readInt();
         CoordinateSequence coordinateSequence = readCoordinates(reader, numPoints);
-        MultiPoint multiPoint = geometryFactory.createMultiPoint(coordinateSequence);
+        MultiPoint multiPoint = (MultiPoint) geometryFactory.createMultiPoint(coordinateSequence);
         return multiPoint;
     }
 }

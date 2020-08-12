@@ -61,10 +61,10 @@ public class VoronoiPartitioning
         for (int i = 0; i < samples.size(); i = i + samples.size() / partitions) {
             Envelope envelope = samples.get(i);
             Coordinate coordinate = new Coordinate((envelope.getMinX() + envelope.getMaxX()) / 2.0, (envelope.getMinY() + envelope.getMaxY()) / 2.0);
-            subSampleList.add(fact.createPoint(coordinate));
+            subSampleList.add((Point) fact.createPoint(coordinate));
         }
 
-        mp = fact.createMultiPoint(subSampleList.toArray(new Point[subSampleList.size()]));
+        mp = (MultiPoint) fact.createMultiPoint(subSampleList.toArray(new Point[subSampleList.size()]));
         VoronoiDiagramBuilder voronoiBuilder = new VoronoiDiagramBuilder();
         voronoiBuilder.setSites(mp);
         Geometry voronoiDiagram = voronoiBuilder.getDiagram(fact);

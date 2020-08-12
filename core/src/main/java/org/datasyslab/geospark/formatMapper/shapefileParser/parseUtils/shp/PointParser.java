@@ -49,7 +49,7 @@ public class PointParser
     {
         double x = reader.readDouble();
         double y = reader.readDouble();
-        Point point = geometryFactory.createPoint(new Coordinate(x, y));
+        Point point = (Point) geometryFactory.createPoint(new Coordinate(x, y));
         return point;
     }
 }

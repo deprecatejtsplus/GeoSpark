@@ -161,7 +161,7 @@ public class GeometrySerde
                 for (int i = 0; i < numGeometries; i++) {
                     geometries[i] = readGeometry(kryo, input);
                 }
-                GeometryCollection collection = geometryFactory.createGeometryCollection(geometries);
+                GeometryCollection collection = (GeometryCollection) geometryFactory.createGeometryCollection(geometries);
                 collection.setUserData(readUserData(kryo, input));
                 return collection;
             }

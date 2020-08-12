@@ -125,7 +125,7 @@ abstract class JudgementBase
 
     private Point makePoint(double x, double y, GeometryFactory factory)
     {
-        return factory.createPoint(new Coordinate(x, y));
+        return (Point) factory.createPoint(new Coordinate(x, y));
     }
 
     private boolean geoMatch(Geometry left, Geometry right)

@@ -74,7 +74,7 @@ public class PolygonParser
                 continue; // if points less than 3, it's not a ring, we just abandon it
             }
 
-            LinearRing ring = geometryFactory.createLinearRing(csRing);
+            LinearRing ring = (LinearRing) geometryFactory.createLinearRing(csRing);
             if (shell == null) {
                 shell = ring;
                 shellsCCW = CoordinateSequences.isCCW(csRing);
@@ -84,7 +84,7 @@ public class PolygonParser
             }
             else {
                 if (shell != null) {
-                    Polygon polygon = geometryFactory.createPolygon(shell, GeometryFactory.toLinearRingArray(holes));
+                    Polygon polygon = (Polygon) geometryFactory.createPolygon(shell, GeometryFactory.toLinearRingArray(holes));
                     polygons.add(polygon);
                 }
 
@@ -94,7 +94,7 @@ public class PolygonParser
         }
 
         if (shell != null) {
-            Polygon polygon = geometryFactory.createPolygon(shell, GeometryFactory.toLinearRingArray(holes));
+            Polygon polygon = (Polygon) geometryFactory.createPolygon(shell, GeometryFactory.toLinearRingArray(holes));
             polygons.add(polygon);
         }
 

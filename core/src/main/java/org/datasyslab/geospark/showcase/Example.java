@@ -172,7 +172,7 @@ public class Example
         PolygonRDDEndOffset = 8;
 
         geometryFactory = new GeometryFactory();
-        kNNQueryPoint = geometryFactory.createPoint(new Coordinate(-84.01, 34.01));
+        kNNQueryPoint = (Point) geometryFactory.createPoint(new Coordinate(-84.01, 34.01));
         rangeQueryWindow = new Envelope(-90.01, -80.01, 30.01, 40.01);
         joinQueryPartitioningType = GridType.QUADTREE;
         eachQueryLoopTimes = 5;

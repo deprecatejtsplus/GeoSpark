@@ -247,7 +247,7 @@ public class Circle
     private boolean intersects(LineString lineString)
     {
         for (int i = 0; i < lineString.getNumPoints() - 1; i++) {
-            if (intersects(lineString.getPointN(i), lineString.getPointN(i + 1))) {
+            if (intersects((Point) lineString.getPointN(i),(Point) lineString.getPointN(i + 1))) {
                 return true;
             }
         }
