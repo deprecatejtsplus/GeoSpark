@@ -88,9 +88,9 @@ public class GeometrySerde
             writeGeometry(kryo, out, circle.getCenterGeometry());
             writeUserData(kryo, out, circle);
         }
-        else if (object instanceof Point || object instanceof LineString
-                || object instanceof Polygon || object instanceof MultiPoint
-                || object instanceof MultiLineString || object instanceof MultiPolygon) {
+        else if (object instanceof com.vividsolutions.jts.geom.Point || object instanceof com.vividsolutions.jts.geom.LineString
+                || object instanceof com.vividsolutions.jts.geom.Polygon || object instanceof com.vividsolutions.jts.geom.MultiPoint
+                || object instanceof com.vividsolutions.jts.geom.MultiLineString || object instanceof com.vividsolutions.jts.geom.MultiPolygon) {
             writeType(out, Type.SHAPE);
             writeGeometry(kryo, out, (Geometry) object);
         }

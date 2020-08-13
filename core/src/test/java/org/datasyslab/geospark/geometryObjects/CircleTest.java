@@ -225,7 +225,7 @@ public class CircleTest
 
     private Point makePoint(double x, double y)
     {
-        return geomFact.createPoint(new Coordinate(x, y));
+        return (Point)geomFact.createPoint(new Coordinate(x, y));
     }
 
     private Geometry parseWkt(String wkt)

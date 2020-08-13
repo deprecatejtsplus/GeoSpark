@@ -157,7 +157,7 @@ public class RectangleKnnTest
                 }
             }
         }
-        queryPoint = fact.createPoint(new Coordinate(-84.01, 34.01));
+        queryPoint = (Point)fact.createPoint(new Coordinate(-84.01, 34.01));
         topK = 100;
     }
 

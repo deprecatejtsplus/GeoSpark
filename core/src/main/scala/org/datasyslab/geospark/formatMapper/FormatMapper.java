@@ -16,6 +16,7 @@
  */
 package org.datasyslab.geospark.formatMapper;
 
+import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -25,7 +26,6 @@ import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.operation.valid.IsValidOp;
 import org.apache.log4j.Logger;
 import org.apache.spark.api.java.function.FlatMapFunction;
-import org.datasyslab.geospark.jts.geom.GeometryCollection;
 import org.datasyslab.geospark.jts.geom.MultiLineString;
 import org.datasyslab.geospark.jts.geom.MultiPoint;
 import org.datasyslab.geospark.jts.geom.MultiPolygon;

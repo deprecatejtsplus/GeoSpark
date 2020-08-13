@@ -191,7 +191,7 @@ public class CRSTransformationTest
             }
         }
 
-        queryPoint = fact.createPoint(new Coordinate(34.01, -84.01));
+        queryPoint = (Point)fact.createPoint(new Coordinate(34.01, -84.01));
         topK = 100;
     }
 

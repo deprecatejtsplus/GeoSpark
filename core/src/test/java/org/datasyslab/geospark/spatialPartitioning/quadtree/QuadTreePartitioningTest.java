@@ -52,7 +52,7 @@ public class QuadTreePartitioningTest
     {
 
         // Create an artificially skewed data set of identical envelopes
-        final Point point = factory.createPoint(new Coordinate(0, 0));
+        final Point point = (Point)factory.createPoint(new Coordinate(0, 0));
 
         final List<Envelope> samples = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
