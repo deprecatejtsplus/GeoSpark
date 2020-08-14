@@ -395,14 +395,17 @@ public class FormatMapper<T extends Geometry>
         if (geometry == null) {
             return;
         }
+        Geometry [] geoms = new Geometry[] {geometry};
+        GeometryCollection gc = new GeometryCollection(geoms, geometry.getFactory());
+
         if (geometry instanceof MultiPoint) {
-            addMultiGeometry((MultiPoint) geometry, result);
+            addMultiGeometry(gc, result);
         }
         else if (geometry instanceof MultiLineString) {
-            addMultiGeometry((MultiLineString) geometry, result);
+            addMultiGeometry(gc, result);
         }
         else if (geometry instanceof MultiPolygon) {
-            addMultiGeometry((MultiPolygon) geometry, result);
+            addMultiGeometry(gc, result);
         }
         else {
             result.add((T) geometry);
