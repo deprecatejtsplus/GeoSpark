@@ -85,6 +85,6 @@ public class BoundaryAndCountAggregationTest
 
     private Point makePoint(double x, double y)
     {
-        return factory.createPoint(new Coordinate(x, y));
+        return (Point) factory.createPoint(new Coordinate(x, y));
     }
 }

@@ -229,7 +229,7 @@ public class SpatialIndexSerdeTest
         else { quadtree = new STRtree(); }
 
         for (int i = 0; i < geomNum; ++i) {
-            Point point = geometryFactory.createPoint(new Coordinate(
+            Point point = (Point) geometryFactory.createPoint(new Coordinate(
                     random.nextDouble() * 360 - 180,
                     random.nextDouble() * 180 - 90
             ));

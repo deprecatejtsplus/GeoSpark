@@ -218,7 +218,7 @@ public class JoinQueryCorrectnessChecker
         coordinates[3] = new Coordinate(minX, minY + side);
         coordinates[4] = coordinates[0];
 
-        return geometryFactory.createPolygon(coordinates);
+        return (Polygon) geometryFactory.createPolygon(coordinates);
     }
 
     private static LineString makeSquareLine(double minX, double minY, double side)
@@ -228,12 +228,12 @@ public class JoinQueryCorrectnessChecker
         coordinates[1] = new Coordinate(minX + side, minY);
         coordinates[2] = new Coordinate(minX + side, minY + side);
 
-        return geometryFactory.createLineString(coordinates);
+        return (LineString) geometryFactory.createLineString(coordinates);
     }
 
     private static Point makePoint(double x, double y)
     {
-        return geometryFactory.createPoint(new Coordinate(x, y));
+        return (Point) geometryFactory.createPoint(new Coordinate(x, y));
     }
 
     private static <T extends Geometry> T wrap(T geometry, Object userData)
