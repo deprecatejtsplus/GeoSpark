@@ -17,9 +17,9 @@
 package org.datasyslab.geosparkviz.core;
 
 import com.vividsolutions.jts.geom.Envelope;
-import org.datasyslab.geospark.jts.geom.LineString;
-import org.datasyslab.geospark.jts.geom.Point;
-import org.datasyslab.geospark.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import org.apache.log4j.Logger;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
@@ -170,7 +170,7 @@ public abstract class VisualizationOperator
     /*
      * Parameters determine raster image
      */
-    
+
 
     /**
      * The distributed raster count matrix.
@@ -299,7 +299,7 @@ public abstract class VisualizationOperator
      * @param generateVectorImage the generate vector image
      */
     public VisualizationOperator(int resolutionX, int resolutionY, Envelope datasetBoundary, ColorizeOption colorizeOption, boolean reverseSpatialCoordinate,
-            int partitionX, int partitionY, boolean parallelPhotoFilter, boolean parallelRenderImage, boolean generateVectorImage)
+                                 int partitionX, int partitionY, boolean parallelPhotoFilter, boolean parallelRenderImage, boolean generateVectorImage)
     {
         logger.info("[GeoSparkViz][Constructor][Start]");
         this.resolutionX = resolutionX;
@@ -811,7 +811,7 @@ public abstract class VisualizationOperator
      * @return the java pair RDD
      */
     protected JavaPairRDD<Pixel, Double> Rasterize(JavaSparkContext sparkContext,
-            SpatialRDD spatialRDD, boolean useSparkDefaultPartition)
+                                                   SpatialRDD spatialRDD, boolean useSparkDefaultPartition)
     {
         logger.info("[GeoSparkViz][Rasterize][Start]");
         JavaRDD<Object> rawSpatialRDD = spatialRDD.rawSpatialRDD;
@@ -822,14 +822,14 @@ public abstract class VisualizationOperator
                     throws Exception
             {
 
-                if (spatialObject instanceof com.vividsolutions.jts.geom.Point) {
-                    return RasterizationUtils.FindPixelCoordinates(resolutionX, resolutionY, datasetBoundary, (com.vividsolutions.jts.geom.Point) spatialObject, colorizeOption, reverseSpatialCoordinate).iterator();
+                if (spatialObject instanceof Point) {
+                    return RasterizationUtils.FindPixelCoordinates(resolutionX, resolutionY, datasetBoundary, (Point) spatialObject, colorizeOption, reverseSpatialCoordinate).iterator();
                 }
-                else if (spatialObject instanceof com.vividsolutions.jts.geom.Polygon) {
-                    return RasterizationUtils.FindPixelCoordinates(resolutionX, resolutionY, datasetBoundary, (com.vividsolutions.jts.geom.Polygon) spatialObject, reverseSpatialCoordinate).iterator();
+                else if (spatialObject instanceof Polygon) {
+                    return RasterizationUtils.FindPixelCoordinates(resolutionX, resolutionY, datasetBoundary, (Polygon) spatialObject, reverseSpatialCoordinate).iterator();
                 }
-                else if (spatialObject instanceof com.vividsolutions.jts.geom.LineString) {
-                    return RasterizationUtils.FindPixelCoordinates(resolutionX, resolutionY, datasetBoundary, (com.vividsolutions.jts.geom.LineString) spatialObject, reverseSpatialCoordinate).iterator();
+                else if (spatialObject instanceof LineString) {
+                    return RasterizationUtils.FindPixelCoordinates(resolutionX, resolutionY, datasetBoundary, (LineString) spatialObject, reverseSpatialCoordinate).iterator();
                 }
                 else {
                     throw new Exception("[GeoSparkViz][Rasterize] Unsupported spatial object types. GeoSparkViz only supports Point, Polygon, LineString");
@@ -886,7 +886,7 @@ public abstract class VisualizationOperator
      * @return the java pair RDD
      */
     protected JavaPairRDD<Pixel, Double> Rasterize(JavaSparkContext sparkContext,
-            JavaPairRDD<Polygon, Long> spatialPairRDD, boolean useSparkDefaultPartition)
+                                                   JavaPairRDD<Polygon, Long> spatialPairRDD, boolean useSparkDefaultPartition)
     {
         logger.info("[GeoSparkViz][Rasterize][Start]");
         JavaPairRDD<Pixel, Double> spatialRDDwithPixelId = spatialPairRDD.flatMapToPair(new PairFlatMapFunction<Tuple2<Polygon, Long>, Pixel, Double>()

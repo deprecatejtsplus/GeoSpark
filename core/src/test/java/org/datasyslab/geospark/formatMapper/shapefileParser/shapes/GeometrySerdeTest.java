@@ -30,6 +30,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 import org.datasyslab.geospark.jts.geom.Circle;
@@ -70,7 +71,7 @@ public class GeometrySerdeTest
         geometry.setUserData("This is a test");
         Assert.assertEquals(geometry, serde(geometry));
 
-        if (geometry instanceof com.vividsolutions.jts.geom.GeometryCollection) {
+        if (geometry instanceof GeometryCollection) {
             return;
         }
 
