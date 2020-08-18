@@ -18,7 +18,7 @@
 package org.datasyslab.geospark.formatMapper.shapefileParser.parseUtils.shp;
 
 import com.esotericsoftware.kryo.io.Input;
-import com.vividsolutions.jts.geom.*;
+import org.locationtech.jts.geom.*;
 import org.datasyslab.geospark.jts.geom.GeometryFactory;
 
 import java.nio.ByteBuffer;

@@ -17,9 +17,8 @@
 
 package org.datasyslab.geospark.spatialPartitioning;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import org.datasyslab.geospark.jts.geom.Point;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.datasyslab.geospark.enums.GridType;
 import org.datasyslab.geospark.joinJudgement.DedupParams;
 import org.datasyslab.geospark.utils.HalfOpenRectangle;
@@ -63,7 +62,7 @@ public class KDBTreePartitioner
 
         final List<KDBTree> matchedPartitions = tree.findLeafNodes(envelope);
 
-        final com.vividsolutions.jts.geom.Point point = spatialObject instanceof com.vividsolutions.jts.geom.Point ? (com.vividsolutions.jts.geom.Point) spatialObject : null;
+        final org.locationtech.jts.geom.Point point = spatialObject instanceof org.locationtech.jts.geom.Point ? (org.locationtech.jts.geom.Point) spatialObject : null;
 
         final Set<Tuple2<Integer, T>> result = new HashSet<>();
         for (KDBTree leaf : matchedPartitions) {

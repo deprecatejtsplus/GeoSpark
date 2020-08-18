@@ -16,7 +16,7 @@
  */
 package org.datasyslab.geospark.geometryObjects;
 
-import com.vividsolutions.jts.geom.*;
+import org.locationtech.jts.geom.*;
 import org.datasyslab.geospark.jts.geom.GeometryFactory;
 
 // TODO: Auto-generated Javadoc

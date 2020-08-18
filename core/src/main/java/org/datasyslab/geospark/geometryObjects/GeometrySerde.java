@@ -22,15 +22,15 @@ import com.esotericsoftware.kryo.Registration;
 import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.apache.log4j.Logger;
 import org.datasyslab.geospark.formatMapper.shapefileParser.parseUtils.shp.ShapeSerde;
 import org.datasyslab.geospark.jts.geom.GeometryFactory;
@@ -94,7 +94,7 @@ public class GeometrySerde
             writeGeometry(kryo, out, (Geometry) object);
         }
         else if (object instanceof GeometryCollection) {
-            GeometryCollection collection = (com.vividsolutions.jts.geom.GeometryCollection) object;
+            GeometryCollection collection = (org.locationtech.jts.geom.GeometryCollection) object;
             writeType(out, Type.GEOMETRYCOLLECTION);
             out.writeInt(collection.getNumGeometries());
             for (int i = 0; i < collection.getNumGeometries(); i++) {

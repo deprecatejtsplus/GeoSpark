@@ -16,10 +16,10 @@
  */
 package org.datasyslab.geospark.formatMapper.shapefileParser;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
 import org.datasyslab.geospark.jts.geom.*;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
@@ -243,7 +243,7 @@ public class ShapefileReader
                         result.add(oneObject);
                     }
                 }
-                else if (spatialObject instanceof com.vividsolutions.jts.geom.Polygon) {
+                else if (spatialObject instanceof org.locationtech.jts.geom.Polygon) {
                     result.add(new Polygon(spatialObject));
                 }
                 else {
@@ -305,7 +305,7 @@ public class ShapefileReader
                                 result.add(oneObject);
                             }
                         }
-                        else if (spatialObject instanceof com.vividsolutions.jts.geom.Point) {
+                        else if (spatialObject instanceof org.locationtech.jts.geom.Point) {
                             result.add(new Point(spatialObject));
                         }
                         else {
@@ -368,7 +368,7 @@ public class ShapefileReader
                                 result.add(oneObject);
                             }
                         }
-                        else if (spatialObject instanceof com.vividsolutions.jts.geom.LineString) {
+                        else if (spatialObject instanceof org.locationtech.jts.geom.LineString) {
                             result.add(new LineString(spatialObject));
                         }
                         else {

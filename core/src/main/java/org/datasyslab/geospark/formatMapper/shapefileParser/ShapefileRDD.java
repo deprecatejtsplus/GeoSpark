@@ -16,7 +16,7 @@
  */
 package org.datasyslab.geospark.formatMapper.shapefileParser;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
@@ -150,16 +150,16 @@ public class ShapefileRDD
                     throws Exception
             {
                 List<Point> result = new ArrayList<Point>();
-                if (spatialObject instanceof com.vividsolutions.jts.geom.MultiPoint) {
-                    MultiPoint multiObjects = (MultiPoint) spatialObject;
+                if (spatialObject instanceof org.locationtech.jts.geom.MultiPoint) {
+                    org.locationtech.jts.geom.MultiPoint multiObjects = (org.locationtech.jts.geom.MultiPoint)spatialObject;
                     for (int i = 0; i < multiObjects.getNumGeometries(); i++) {
-                        Point oneObject = (Point) multiObjects.getGeometryN(i);
+                        Point oneObject = new Point(multiObjects.getGeometryN(i));
                         oneObject.setUserData(multiObjects.getUserData());
                         result.add(oneObject);
                     }
                 }
-                else if (spatialObject instanceof com.vividsolutions.jts.geom.Point) {
-                    result.add((Point) spatialObject);
+                else if (spatialObject instanceof org.locationtech.jts.geom.Point) {
+                    result.add(new Point(spatialObject));
                 }
                 else {
                     throw new Exception("[ShapefileRDD][getPointRDD] the object type is not Point or MultiPoint type. It is " + spatialObject.getGeometryType());
@@ -183,16 +183,16 @@ public class ShapefileRDD
                     throws Exception
             {
                 List<Polygon> result = new ArrayList<Polygon>();
-                if (spatialObject instanceof com.vividsolutions.jts.geom.MultiPolygon) {
-                    MultiPolygon multiObjects = new MultiPolygon((com.vividsolutions.jts.geom.MultiPolygon) spatialObject);
+                if (spatialObject instanceof org.locationtech.jts.geom.MultiPolygon) {
+                    org.locationtech.jts.geom.MultiPolygon multiObjects = (org.locationtech.jts.geom.MultiPolygon)spatialObject;
                     for (int i = 0; i < multiObjects.getNumGeometries(); i++) {
                         Polygon oneObject = new Polygon(multiObjects.getGeometryN(i));
                         oneObject.setUserData(multiObjects.getUserData());
                         result.add(oneObject);
                     }
                 }
-                else if (spatialObject instanceof com.vividsolutions.jts.geom.Polygon) {
-                    result.add((Polygon) spatialObject);
+                else if (spatialObject instanceof org.locationtech.jts.geom.Polygon) {
+                    result.add(new Polygon(spatialObject));
                 }
                 else {
                     throw new Exception("[ShapefileRDD][getPolygonRDD] the object type is not Polygon or MultiPolygon type. It is " + spatialObject.getGeometryType());
@@ -216,16 +216,16 @@ public class ShapefileRDD
                     throws Exception
             {
                 List<LineString> result = new ArrayList<LineString>();
-                if (spatialObject instanceof com.vividsolutions.jts.geom.MultiLineString) {
-                    MultiLineString multiObjects = (MultiLineString) spatialObject;
+                if (spatialObject instanceof org.locationtech.jts.geom.MultiLineString) {
+                    org.locationtech.jts.geom.MultiLineString multiObjects = (org.locationtech.jts.geom.MultiLineString) spatialObject;
                     for (int i = 0; i < multiObjects.getNumGeometries(); i++) {
-                        LineString oneObject = (LineString) multiObjects.getGeometryN(i);
+                        LineString oneObject = new LineString(multiObjects.getGeometryN(i));
                         oneObject.setUserData(multiObjects.getUserData());
                         result.add(oneObject);
                     }
                 }
-                else if (spatialObject instanceof com.vividsolutions.jts.geom.LineString) {
-                    result.add((LineString) spatialObject);
+                else if (spatialObject instanceof org.locationtech.jts.geom.LineString) {
+                    result.add(new LineString(spatialObject));
                 }
                 else {
                     throw new Exception("[ShapefileRDD][getLineStringRDD] the object type is not LineString or MultiLineString type. It is " + spatialObject.getGeometryType());
