@@ -18,7 +18,7 @@ package org.datasyslab.geospark.spatialPartitioning.quadtree;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-import org.datasyslab.geospark.jts.geom.Point;
+import com.vividsolutions.jts.geom.Point;
 import org.datasyslab.geospark.enums.GridType;
 import org.datasyslab.geospark.joinJudgement.DedupParams;
 import org.datasyslab.geospark.spatialPartitioning.SpatialPartitioner;
@@ -59,7 +59,7 @@ public class QuadTreePartitioner
 
         final List<QuadRectangle> matchedPartitions = quadTree.findZones(new QuadRectangle(envelope));
 
-        final com.vividsolutions.jts.geom.Point point = spatialObject instanceof com.vividsolutions.jts.geom.Point ? (com.vividsolutions.jts.geom.Point) spatialObject : null;
+        final Point point = spatialObject instanceof Point ? (Point) spatialObject : null;
 
         final Set<Tuple2<Integer, T>> result = new HashSet<>();
         for (QuadRectangle rectangle : matchedPartitions) {
