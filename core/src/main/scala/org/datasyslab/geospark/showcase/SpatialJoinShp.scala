@@ -17,7 +17,7 @@
 
 package org.datasyslab.geospark.showcase
 
-import org.datasyslab.geospark.jts.geom.Polygon
+import com.vividsolutions.jts.geom.Polygon
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{SparkConf, SparkContext}
@@ -60,7 +60,7 @@ object SpatialJoinShp extends App {
   //val query = JoinQuery.SpatialJoinQuery(wdpa, species, false, false)
 
   println("polygon is " + shp2.getPolygonRDD.take(100).get(55))
-  println("userdata is " + wdpa.rawSpatialRDD.take(100).get(55).asInstanceOf[com.vividsolutions.jts.geom.Polygon].getUserData)
+  println("userdata is " + wdpa.rawSpatialRDD.take(100).get(55).asInstanceOf[Polygon].getUserData)
   println(species.rawSpatialRDD.count())
 
 

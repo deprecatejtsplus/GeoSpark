@@ -666,7 +666,7 @@ public class SpatialRDD<T extends Geometry>
                 coordinates[2] = new Coordinate(x2, y2);
                 coordinates[3] = new Coordinate(x2, y1);
                 coordinates[4] = coordinates[0];
-                linear = (LinearRing) fact.createLinearRing(coordinates);
+                linear = fact.createLinearRing(coordinates);
                 Polygon polygonObject = new Polygon(linear, null, fact);
                 return polygonObject;
             }

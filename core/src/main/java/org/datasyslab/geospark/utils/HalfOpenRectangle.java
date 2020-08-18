@@ -17,7 +17,7 @@
 package org.datasyslab.geospark.utils;
 
 import com.vividsolutions.jts.geom.Envelope;
-import org.datasyslab.geospark.jts.geom.Point;
+import com.vividsolutions.jts.geom.Point;
 
 public class HalfOpenRectangle
 {
@@ -28,7 +28,7 @@ public class HalfOpenRectangle
         this.envelope = envelope;
     }
 
-    public boolean contains(com.vividsolutions.jts.geom.Point point)
+    public boolean contains(Point point)
     {
         return contains(point.getX(), point.getY());
     }

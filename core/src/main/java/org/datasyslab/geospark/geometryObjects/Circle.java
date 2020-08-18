@@ -16,18 +16,7 @@
  */
 package org.datasyslab.geospark.geometryObjects;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateFilter;
-import com.vividsolutions.jts.geom.CoordinateSequenceComparator;
-import com.vividsolutions.jts.geom.CoordinateSequenceFilter;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryComponentFilter;
-import com.vividsolutions.jts.geom.GeometryFilter;
-import org.datasyslab.geospark.jts.geom.GeometryCollection;
-import org.datasyslab.geospark.jts.geom.LineString;
-import org.datasyslab.geospark.jts.geom.Point;
-import org.datasyslab.geospark.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.*;
 import org.datasyslab.geospark.jts.geom.GeometryFactory;
 
 // TODO: Auto-generated Javadoc
@@ -128,7 +117,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#covers(com.vividsolutions.jts.geom.Geometry)
+     * @see Geometry#covers(Geometry)
      */
     @Override
     public boolean covers(Geometry other)
@@ -139,20 +128,20 @@ public class Circle
             return false;
         }
 
-        if (other instanceof com.vividsolutions.jts.geom.Point) {
-            return covers((com.vividsolutions.jts.geom.Point) other);
+        if (other instanceof Point) {
+            return covers((Point) other);
         }
 
-        if (other instanceof com.vividsolutions.jts.geom.LineString) {
-            return covers((com.vividsolutions.jts.geom.LineString) other);
+        if (other instanceof LineString) {
+            return covers((LineString) other);
         }
 
-        if (other instanceof com.vividsolutions.jts.geom.Polygon) {
-            return covers(((com.vividsolutions.jts.geom.Polygon) other).getExteriorRing());
+        if (other instanceof Polygon) {
+            return covers(((Polygon) other).getExteriorRing());
         }
 
-        if (other instanceof com.vividsolutions.jts.geom.GeometryCollection) {
-            com.vividsolutions.jts.geom.GeometryCollection collection = (com.vividsolutions.jts.geom.GeometryCollection) other;
+        if (other instanceof GeometryCollection) {
+            GeometryCollection collection = (GeometryCollection) other;
             for (int i = 0; i < collection.getNumGeometries(); i++) {
                 if (!covers(collection.getGeometryN(i))) {
                     return false;
@@ -165,7 +154,7 @@ public class Circle
                 other.getGeometryType());
     }
 
-    private boolean covers(com.vividsolutions.jts.geom.LineString lineString)
+    private boolean covers(LineString lineString)
     {
         for (int i = 0; i < lineString.getNumPoints(); i++) {
             if (!covers(lineString.getPointN(i))) {
@@ -175,7 +164,7 @@ public class Circle
         return true;
     }
 
-    private boolean covers(com.vividsolutions.jts.geom.Point point)
+    private boolean covers(Point point)
     {
         double deltaX = point.getX() - centerPoint.x;
         double deltaY = point.getY() - centerPoint.y;
@@ -184,7 +173,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#intersects(com.vividsolutions.jts.geom.Geometry)
+     * @see Geometry#intersects(Geometry)
      */
     @Override
     public boolean intersects(Geometry other)
@@ -195,20 +184,20 @@ public class Circle
             return false;
         }
 
-        if (other instanceof com.vividsolutions.jts.geom.Point) {
-            return covers((com.vividsolutions.jts.geom.Point) other);
+        if (other instanceof Point) {
+            return covers((Point) other);
         }
 
-        if (other instanceof com.vividsolutions.jts.geom.LineString) {
-            return intersects((com.vividsolutions.jts.geom.LineString) other);
+        if (other instanceof LineString) {
+            return intersects((LineString) other);
         }
 
-        if (other instanceof com.vividsolutions.jts.geom.Polygon) {
-            return intersects((com.vividsolutions.jts.geom.Polygon) other);
+        if (other instanceof Polygon) {
+            return intersects((Polygon) other);
         }
 
-        if (other instanceof com.vividsolutions.jts.geom.GeometryCollection) {
-            com.vividsolutions.jts.geom.GeometryCollection collection = (com.vividsolutions.jts.geom.GeometryCollection) other;
+        if (other instanceof GeometryCollection) {
+            GeometryCollection collection = (GeometryCollection) other;
             for (int i = 0; i < collection.getNumGeometries(); i++) {
                 if (intersects(collection.getGeometryN(i))) {
                     return true;
@@ -221,7 +210,7 @@ public class Circle
                 other.getGeometryType());
     }
 
-    private boolean intersects(com.vividsolutions.jts.geom.Polygon polygon)
+    private boolean intersects(Polygon polygon)
     {
         if (intersects(polygon.getExteriorRing())) {
             return true;
@@ -244,7 +233,7 @@ public class Circle
         return false;
     }
 
-    private boolean intersects(com.vividsolutions.jts.geom.LineString lineString)
+    private boolean intersects(LineString lineString)
     {
         for (int i = 0; i < lineString.getNumPoints() - 1; i++) {
             if (intersects(lineString.getPointN(i), lineString.getPointN(i + 1))) {
@@ -257,7 +246,7 @@ public class Circle
     /**
      * @return true if a line from `start` to `end` intersects this circle
      */
-    private boolean intersects(com.vividsolutions.jts.geom.Point start, com.vividsolutions.jts.geom.Point end)
+    private boolean intersects(Point start, Point end)
     {
         double deltaX = end.getX() - start.getX();
         double deltaY = end.getY() - start.getY();
@@ -290,7 +279,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#getGeometryType()
+     * @see Geometry#getGeometryType()
      */
     @Override
     public String getGeometryType()
@@ -299,7 +288,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#getCoordinate()
+     * @see Geometry#getCoordinate()
      */
     @Override
     public Coordinate getCoordinate()
@@ -308,7 +297,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#getCoordinates()
+     * @see Geometry#getCoordinates()
      */
     @Override
     public Coordinate[] getCoordinates()
@@ -317,7 +306,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#getNumPoints()
+     * @see Geometry#getNumPoints()
      */
     @Override
     public int getNumPoints()
@@ -326,7 +315,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#isEmpty()
+     * @see Geometry#isEmpty()
      */
     @Override
     public boolean isEmpty()
@@ -335,7 +324,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#getDimension()
+     * @see Geometry#getDimension()
      */
     @Override
     public int getDimension()
@@ -344,7 +333,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#getBoundary()
+     * @see Geometry#getBoundary()
      */
     @Override
     public Geometry getBoundary()
@@ -353,7 +342,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#getBoundaryDimension()
+     * @see Geometry#getBoundaryDimension()
      */
     @Override
     public int getBoundaryDimension()
@@ -362,7 +351,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#reverse()
+     * @see Geometry#reverse()
      */
     @Override
     public Geometry reverse()
@@ -373,7 +362,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#clone()
+     * @see Geometry#clone()
      */
     @Override
     public Object clone()
@@ -384,7 +373,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#equalsExact(com.vividsolutions.jts.geom.Geometry, double)
+     * @see Geometry#equalsExact(Geometry, double)
      */
     @Override
     public boolean equalsExact(Geometry g, double tolerance)
@@ -400,7 +389,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#apply(com.vividsolutions.jts.geom.CoordinateFilter)
+     * @see Geometry#apply(CoordinateFilter)
      */
     @Override
     public void apply(CoordinateFilter filter)
@@ -409,7 +398,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#apply(com.vividsolutions.jts.geom.CoordinateSequenceFilter)
+     * @see Geometry#apply(CoordinateSequenceFilter)
      */
     @Override
     public void apply(CoordinateSequenceFilter filter)
@@ -418,7 +407,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#apply(com.vividsolutions.jts.geom.GeometryFilter)
+     * @see Geometry#apply(GeometryFilter)
      */
     @Override
     public void apply(GeometryFilter filter)
@@ -427,7 +416,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#apply(com.vividsolutions.jts.geom.GeometryComponentFilter)
+     * @see Geometry#apply(GeometryComponentFilter)
      */
     @Override
     public void apply(GeometryComponentFilter filter)
@@ -436,7 +425,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#normalize()
+     * @see Geometry#normalize()
      */
     @Override
     public void normalize()
@@ -445,7 +434,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#computeEnvelopeInternal()
+     * @see Geometry#computeEnvelopeInternal()
      */
     @Override
     protected Envelope computeEnvelopeInternal()
@@ -457,7 +446,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#compareToSameClass(java.lang.Object)
+     * @see Geometry#compareToSameClass(java.lang.Object)
      */
     @Override
     protected int compareToSameClass(Object other)
@@ -477,7 +466,7 @@ public class Circle
     }
 
     /* (non-Javadoc)
-     * @see com.vividsolutions.jts.geom.Geometry#compareToSameClass(java.lang.Object, com.vividsolutions.jts.geom.CoordinateSequenceComparator)
+     * @see Geometry#compareToSameClass(java.lang.Object, CoordinateSequenceComparator)
      */
     @Override
     protected int compareToSameClass(Object other, CoordinateSequenceComparator comp)
