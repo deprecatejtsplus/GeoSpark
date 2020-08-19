@@ -17,13 +17,10 @@
 package org.datasyslab.geospark.formatMapper.shapefileParser;
 
 import com.vividsolutions.jts.geom.Geometry;
-import org.datasyslab.geospark.jts.geom.GeometryFactory;
-import org.datasyslab.geospark.jts.geom.LineString;
-import org.datasyslab.geospark.jts.geom.MultiLineString;
-import org.datasyslab.geospark.jts.geom.MultiPoint;
-import org.datasyslab.geospark.jts.geom.MultiPolygon;
-import org.datasyslab.geospark.jts.geom.Point;
-import org.datasyslab.geospark.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import org.datasyslab.geospark.jts.geom.*;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
@@ -238,8 +235,8 @@ public class ShapefileReader
                     throws Exception
             {
                 List<Polygon> result = new ArrayList<>();
-                if (spatialObject instanceof com.vividsolutions.jts.geom.MultiPolygon) {
-                    com.vividsolutions.jts.geom.MultiPolygon multiObjects = (com.vividsolutions.jts.geom.MultiPolygon) spatialObject;
+                if (spatialObject instanceof MultiPolygon) {
+                    MultiPolygon multiObjects = (MultiPolygon) spatialObject;
                     for (int i = 0; i < multiObjects.getNumGeometries(); i++) {
                         Polygon oneObject = new Polygon(multiObjects.getGeometryN(i));
                         oneObject.setUserData(multiObjects.getUserData());
@@ -300,8 +297,8 @@ public class ShapefileReader
                             throws Exception
                     {
                         List<Point> result = new ArrayList<>();
-                        if (spatialObject instanceof com.vividsolutions.jts.geom.MultiPoint) {
-                            com.vividsolutions.jts.geom.MultiPoint multiObjects = (com.vividsolutions.jts.geom.MultiPoint) spatialObject;
+                        if (spatialObject instanceof MultiPoint) {
+                            MultiPoint multiObjects = (MultiPoint) spatialObject;
                             for (int i = 0; i < multiObjects.getNumGeometries(); i++) {
                                 Point oneObject = new Point(multiObjects.getGeometryN(i));
                                 oneObject.setUserData(multiObjects.getUserData());
@@ -363,8 +360,8 @@ public class ShapefileReader
                             throws Exception
                     {
                         List<LineString> result = new ArrayList<LineString>();
-                        if (spatialObject instanceof com.vividsolutions.jts.geom.MultiLineString) {
-                            com.vividsolutions.jts.geom.MultiLineString multiObjects = (com.vividsolutions.jts.geom.MultiLineString) spatialObject;
+                        if (spatialObject instanceof MultiLineString) {
+                            MultiLineString multiObjects = (MultiLineString) spatialObject;
                             for (int i = 0; i < multiObjects.getNumGeometries(); i++) {
                                 LineString oneObject = new LineString(multiObjects.getGeometryN(i));
                                 oneObject.setUserData(multiObjects.getUserData());
