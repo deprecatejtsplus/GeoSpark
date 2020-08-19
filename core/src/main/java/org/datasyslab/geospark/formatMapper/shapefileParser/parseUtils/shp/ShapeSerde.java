@@ -18,8 +18,14 @@
 package org.datasyslab.geospark.formatMapper.shapefileParser.parseUtils.shp;
 
 import com.esotericsoftware.kryo.io.Input;
-import com.vividsolutions.jts.geom.*;
+import com.vividsolutions.jts.geom.Geometry;
 import org.datasyslab.geospark.jts.geom.GeometryFactory;
+import org.datasyslab.geospark.jts.geom.LineString;
+import org.datasyslab.geospark.jts.geom.MultiLineString;
+import org.datasyslab.geospark.jts.geom.MultiPoint;
+import org.datasyslab.geospark.jts.geom.MultiPolygon;
+import org.datasyslab.geospark.jts.geom.Point;
+import org.datasyslab.geospark.jts.geom.Polygon;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -54,28 +60,28 @@ public class ShapeSerde
 {
     public static byte[] serialize(Geometry geometry)
     {
-        if (geometry instanceof Point) {
-            return serialize((Point) geometry);
+        if (geometry instanceof com.vividsolutions.jts.geom.Point) {
+            return serialize((com.vividsolutions.jts.geom.Point) geometry);
         }
 
-        if (geometry instanceof MultiPoint) {
-            return serialize((MultiPoint) geometry);
+        if (geometry instanceof com.vividsolutions.jts.geom.MultiPoint) {
+            return serialize((com.vividsolutions.jts.geom.MultiPoint) geometry);
         }
 
-        if (geometry instanceof LineString) {
-            return serialize((LineString) geometry);
+        if (geometry instanceof com.vividsolutions.jts.geom.LineString) {
+            return serialize((com.vividsolutions.jts.geom.LineString) geometry);
         }
 
-        if (geometry instanceof MultiLineString) {
-            return serialize((MultiLineString) geometry);
+        if (geometry instanceof com.vividsolutions.jts.geom.MultiLineString) {
+            return serialize((com.vividsolutions.jts.geom.MultiLineString) geometry);
         }
 
-        if (geometry instanceof Polygon) {
-            return serialize((Polygon) geometry);
+        if (geometry instanceof com.vividsolutions.jts.geom.Polygon) {
+            return serialize((com.vividsolutions.jts.geom.Polygon) geometry);
         }
 
-        if (geometry instanceof MultiPolygon) {
-            return serialize((MultiPolygon) geometry);
+        if (geometry instanceof com.vividsolutions.jts.geom.MultiPolygon) {
+            return serialize((com.vividsolutions.jts.geom.MultiPolygon) geometry);
         }
 
         throw new UnsupportedOperationException("Geometry type is not supported: " +
@@ -100,7 +106,7 @@ public class ShapeSerde
 
     private static final int POINT_LENGTH = 1 + 2 * DOUBLE_LENGTH;
 
-    private static byte[] serialize(Point point)
+    private static byte[] serialize(com.vividsolutions.jts.geom.Point point)
     {
         ByteBuffer buffer = newBuffer(POINT_LENGTH);
         putType(buffer, ShapeType.POINT);
@@ -115,7 +121,7 @@ public class ShapeSerde
         buffer.put((byte) type.getId());
     }
 
-    private static byte[] serialize(MultiPoint multiPoint)
+    private static byte[] serialize(com.vividsolutions.jts.geom.MultiPoint multiPoint)
     {
         int numPoints = multiPoint.getNumPoints();
 
@@ -124,19 +130,19 @@ public class ShapeSerde
         buffer.position(buffer.position() + 4 * DOUBLE_LENGTH);
         buffer.putInt(numPoints);
         for (int i = 0; i < numPoints; i++) {
-            Point point = (Point) multiPoint.getGeometryN(i);
+            com.vividsolutions.jts.geom.Point point = (com.vividsolutions.jts.geom.Point) multiPoint.getGeometryN(i);
             buffer.putDouble(point.getX());
             buffer.putDouble(point.getY());
         }
         return buffer.array();
     }
 
-    private static int calculateBufferSize(MultiPoint multiPoint)
+    private static int calculateBufferSize(com.vividsolutions.jts.geom.MultiPoint multiPoint)
     {
         return 1 + 4 * DOUBLE_LENGTH + INT_LENGTH + multiPoint.getNumPoints() * 2 * DOUBLE_LENGTH;
     }
 
-    private static byte[] serialize(LineString lineString)
+    private static byte[] serialize(com.vividsolutions.jts.geom.LineString lineString)
     {
         int numPoints = lineString.getNumPoints();
 
@@ -160,7 +166,7 @@ public class ShapeSerde
         buffer.putInt(numPoints);
     }
 
-    private static byte[] serialize(MultiLineString multiLineString)
+    private static byte[] serialize(com.vividsolutions.jts.geom.MultiLineString multiLineString)
     {
         int numPoints = multiLineString.getNumPoints();
         int numParts = multiLineString.getNumGeometries();
@@ -175,12 +181,12 @@ public class ShapeSerde
         }
 
         for (int i = 0; i < numParts; i++) {
-            putPoints(buffer, (LineString) multiLineString.getGeometryN(i));
+            putPoints(buffer, (com.vividsolutions.jts.geom.LineString) multiLineString.getGeometryN(i));
         }
         return buffer.array();
     }
 
-    private static byte[] serialize(Polygon polygon)
+    private static byte[] serialize(com.vividsolutions.jts.geom.Polygon polygon)
     {
         int numRings = polygon.getNumInteriorRing() + 1;
         int numPoints = polygon.getNumPoints();
@@ -192,7 +198,7 @@ public class ShapeSerde
         return buffer.array();
     }
 
-    private static int putRingOffsets(ByteBuffer buffer, Polygon polygon, int initialOffset)
+    private static int putRingOffsets(ByteBuffer buffer, com.vividsolutions.jts.geom.Polygon polygon, int initialOffset)
     {
         int offset = initialOffset;
         int numRings = polygon.getNumInteriorRing() + 1;
@@ -207,14 +213,14 @@ public class ShapeSerde
         return offset;
     }
 
-    private static byte[] serialize(MultiPolygon multiPolygon)
+    private static byte[] serialize(com.vividsolutions.jts.geom.MultiPolygon multiPolygon)
     {
         int numPolygons = multiPolygon.getNumGeometries();
         int numPoints = multiPolygon.getNumPoints();
 
         int numRings = 0;
         for (int i = 0; i < numPolygons; i++) {
-            Polygon polygon = (Polygon) multiPolygon.getGeometryN(i);
+            com.vividsolutions.jts.geom.Polygon polygon = (com.vividsolutions.jts.geom.Polygon) multiPolygon.getGeometryN(i);
             numRings += polygon.getNumInteriorRing() + 1;
         }
 
@@ -223,18 +229,18 @@ public class ShapeSerde
 
         int offset = 0;
         for (int i = 0; i < numPolygons; i++) {
-            Polygon polygon = (Polygon) multiPolygon.getGeometryN(i);
+            com.vividsolutions.jts.geom.Polygon polygon = (com.vividsolutions.jts.geom.Polygon) multiPolygon.getGeometryN(i);
             offset = putRingOffsets(buffer, polygon, offset);
         }
 
         for (int i = 0; i < numPolygons; i++) {
-            Polygon polygon = (Polygon) multiPolygon.getGeometryN(i);
+            com.vividsolutions.jts.geom.Polygon polygon = (com.vividsolutions.jts.geom.Polygon) multiPolygon.getGeometryN(i);
             putPolygonPoints(buffer, polygon);
         }
         return buffer.array();
     }
 
-    private static void putPolygonPoints(ByteBuffer buffer, Polygon polygon)
+    private static void putPolygonPoints(ByteBuffer buffer, com.vividsolutions.jts.geom.Polygon polygon)
     {
         putPoints(buffer, polygon.getExteriorRing());
         for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
@@ -242,11 +248,11 @@ public class ShapeSerde
         }
     }
 
-    private static void putPoints(ByteBuffer buffer, LineString geometry)
+    private static void putPoints(ByteBuffer buffer, com.vividsolutions.jts.geom.LineString geometry)
     {
         int numPoints = geometry.getNumPoints();
         for (int i = 0; i < numPoints; i++) {
-            Point point = geometry.getPointN(i);
+            com.vividsolutions.jts.geom.Point point = geometry.getPointN(i);
             buffer.putDouble(point.getX());
             buffer.putDouble(point.getY());
         }

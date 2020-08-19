@@ -24,16 +24,11 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
+import org.datasyslab.geospark.jts.geom.GeometryFactory;
+import org.datasyslab.geospark.jts.geom.GeometryCollection;
+import org.datasyslab.geospark.jts.geom.Circle;
 import org.apache.log4j.Logger;
 import org.datasyslab.geospark.formatMapper.shapefileParser.parseUtils.shp.ShapeSerde;
-import org.datasyslab.geospark.jts.geom.GeometryFactory;
 
 /**
  * Provides methods to efficiently serialize and deserialize geometry types.
@@ -87,14 +82,14 @@ public class GeometrySerde
             writeGeometry(kryo, out, circle.getCenterGeometry());
             writeUserData(kryo, out, circle);
         }
-        else if (object instanceof Point || object instanceof LineString
-                || object instanceof Polygon || object instanceof MultiPoint
-                || object instanceof MultiLineString || object instanceof MultiPolygon) {
+        else if (object instanceof com.vividsolutions.jts.geom.Point || object instanceof com.vividsolutions.jts.geom.LineString
+                || object instanceof com.vividsolutions.jts.geom.Polygon || object instanceof com.vividsolutions.jts.geom.MultiPoint
+                || object instanceof com.vividsolutions.jts.geom.MultiLineString || object instanceof com.vividsolutions.jts.geom.MultiPolygon) {
             writeType(out, Type.SHAPE);
             writeGeometry(kryo, out, (Geometry) object);
         }
-        else if (object instanceof GeometryCollection) {
-            GeometryCollection collection = (com.vividsolutions.jts.geom.GeometryCollection) object;
+        else if (object instanceof com.vividsolutions.jts.geom.GeometryCollection) {
+            com.vividsolutions.jts.geom.GeometryCollection collection = (com.vividsolutions.jts.geom.GeometryCollection) object;
             writeType(out, Type.GEOMETRYCOLLECTION);
             out.writeInt(collection.getNumGeometries());
             for (int i = 0; i < collection.getNumGeometries(); i++) {
