@@ -19,9 +19,6 @@ package org.datasyslab.geospark.formatMapper;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBReader;
 import com.vividsolutions.jts.io.WKTReader;
@@ -396,14 +393,14 @@ public class FormatMapper<T extends Geometry>
         if (geometry == null) {
             return;
         }
-        if (geometry instanceof MultiPoint) {
-            addMultiGeometry((MultiPoint) geometry, result);
+        if (geometry instanceof com.vividsolutions.jts.geom.MultiPoint) {
+            addMultiGeometry((com.vividsolutions.jts.geom.MultiPoint) geometry, result);
         }
-        else if (geometry instanceof MultiLineString) {
-            addMultiGeometry((MultiLineString) geometry, result);
+        else if (geometry instanceof com.vividsolutions.jts.geom.MultiLineString) {
+            addMultiGeometry((com.vividsolutions.jts.geom.MultiLineString) geometry, result);
         }
-        else if (geometry instanceof MultiPolygon) {
-            addMultiGeometry((MultiPolygon) geometry, result);
+        else if (geometry instanceof com.vividsolutions.jts.geom.MultiPolygon) {
+            addMultiGeometry((com.vividsolutions.jts.geom.MultiPolygon) geometry, result);
         }
         else {
             result.add((T) geometry);
