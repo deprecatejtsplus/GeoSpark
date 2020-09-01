@@ -25,14 +25,12 @@ script:
   - mvn -q -DskipTests clean install
   - find core/target/ -iregex "core\/target\/geospark-[0-9]\.[0-9]\.[0-9]\(-SNAPSHOT\)?\.jar" -exec cp {} $SPARK_HOME/jars \;
   - find sql/target/ -iregex "sql\/target\/geospark-sql_[0-9]\.[0-9]-[0-9]\.[0-9]\.[0-9]\(-SNAPSHOT\)?\.jar" -exec cp {} $SPARK_HOME/jars \;
-  - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=com.googlecode.efficient-java-matrix-library:core:0.26
-  - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=net.java.dev.jsr-275:jsr-275:1.0-beta-2
   - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=org.geotools:gt-epsg-extension:23.2
-  - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=org.geotools:gt-epsg-hsql:23.2
-  - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=org.geotools:gt-main:23.2
-  - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=org.geotools:gt-metadata:23.2
-  - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=org.geotools:gt-opengis:23.2
-  - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=org.geotools:gt-referencing:23.2
   - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=org.geotools:gt-shapefile:23.2
-  - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=org.hsqldb:hsqldb:2.4.1
+  - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=org.geotools:gt-main:23.2
+  - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=org.geotools:gt-referencing:23.2
+  - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=org.geotools:gt-epsg-hsql:23.2
+
+  - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=org.datasyslab:sernetcdf:0.1.0
+
   - (cd python;pipenv run pytest tests)
