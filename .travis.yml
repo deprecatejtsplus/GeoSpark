@@ -41,3 +41,8 @@ script:
   - ls -l /tmp/Geotools/Databases/HSQL
   - ls -l /tmp/Geotools/Databases/HSQL/v7.9.0
   - (cd python;pipenv run pytest tests)
+  - ls -l /tmp
+  - ls -l /tmp/Geotools
+  - ls -l /tmp/Geotools/Databases
+  - ls -l /tmp/Geotools/Databases/HSQL
+  - ls -l /tmp/Geotools/Databases/HSQL/v7.9.0
