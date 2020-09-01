@@ -146,6 +146,22 @@
         <!-- Users have to include them by themselves manually -->
         <!-- See https://www.apache.org/legal/resolved.html#category-x -->
         <!-- See https://github.com/geotools/geotools#license -->
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-main</artifactId>
+            <version>${geotools.version}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.locationtech</groupId>
+                    <artifactId>jts</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <!--for CRS transformation-->
         <dependency>
             <groupId>org.geotools</groupId>
