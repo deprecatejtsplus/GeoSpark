@@ -17,12 +17,14 @@ install:
   - wget https://archive.apache.org/dist/spark/spark-3.0.0/spark-3.0.0-bin-hadoop2.7.tgz
   - tar -xzf spark-3.0.0-bin-hadoop2.7.tgz
   - rm spark-3.0.0-bin-hadoop2.7.tgz
-  - mkdir /tmp/Geotools
 
 script:
   - (cd python;pipenv install --dev) 
   - export SPARK_HOME=$PWD/spark-3.0.0-bin-hadoop2.7
   - export PYTHONPATH=$SPARK_HOME/python
+  - mvn -q -DskipTests clean install
+  - find core/target/ -iregex "core\/target\/geospark-[0-9]\.[0-9]\.[0-9]\(-SNAPSHOT\)?\.jar" -exec cp {} $SPARK_HOME/jars \;
+  - find sql/target/ -iregex "sql\/target\/geospark-sql_[0-9]\.[0-9]-[0-9]\.[0-9]\.[0-9]\(-SNAPSHOT\)?\.jar" -exec cp {} $SPARK_HOME/jars \;
   - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=com.googlecode.efficient-java-matrix-library:core:0.26
   - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=net.java.dev.jsr-275:jsr-275:1.0-beta-2
   - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=org.geotools:gt-epsg-extension:23.2
@@ -33,17 +35,4 @@ script:
   - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=org.geotools:gt-referencing:23.2
   - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=org.geotools:gt-shapefile:23.2
   - mvn dependency:get -Ddest=${SPARK_HOME}/jars -Dartifact=org.hsqldb:hsqldb:2.4.1
-  - mvn -q -DskipTests clean install
-  - find core/target/ -iregex "core\/target\/geospark-[0-9]\.[0-9]\.[0-9]\(-SNAPSHOT\)?\.jar" -exec cp {} $SPARK_HOME/jars \;
-  - find sql/target/ -iregex "sql\/target\/geospark-sql_[0-9]\.[0-9]-[0-9]\.[0-9]\.[0-9]\(-SNAPSHOT\)?\.jar" -exec cp {} $SPARK_HOME/jars \;
-  - ls -l /tmp
-  - ls -l /tmp/Geotools
-  - ls -l /tmp/Geotools/Databases
-  - ls -l /tmp/Geotools/Databases/HSQL
-  - ls -l /tmp/Geotools/Databases/HSQL/v7.9.0
   - (cd python;pipenv run pytest tests)
-  - ls -l /tmp
-  - ls -l /tmp/Geotools
-  - ls -l /tmp/Geotools/Databases
-  - ls -l /tmp/Geotools/Databases/HSQL
-  - ls -l /tmp/Geotools/Databases/HSQL/v7.9.0
