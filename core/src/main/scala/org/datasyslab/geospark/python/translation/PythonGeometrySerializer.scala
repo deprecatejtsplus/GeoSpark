@@ -2,12 +2,13 @@ package org.datasyslab.geospark.python.translation
 
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.io.WKBReader
-import org.datasyslab.geospark.jts.geom.Circle
+import org.datasyslab.geospark.jts.geom.{Circle, GeometryFactory}
 import org.datasyslab.geospark.python.SerializationException
 import java.nio.ByteBuffer
 
 
 private[python] class PythonGeometrySerializer extends Serializable {
+  val factory = new GeometryFactory()
 
   /*
       Translates JTS geometry to byte array which then will be decoded to Python shapely geometry objects
@@ -27,7 +28,7 @@ private[python] class PythonGeometrySerializer extends Serializable {
     val isCircle = values.head.toInt
     val valuesLength = values.length
 
-    if (isCircle == 1){
+    val geometry = if (isCircle == 1){
       val geom = reader.read(values.slice(9, valuesLength))
       val radius = ByteBuffer.wrap(values.slice(1 , 9)).getDouble()
       new Circle(geom, radius)
@@ -37,5 +38,6 @@ private[python] class PythonGeometrySerializer extends Serializable {
     }
     else throw SerializationException("Can not deserialize object")
 
+    factory.fromJTS(geometry)
   }
 }
